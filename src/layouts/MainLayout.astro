@@ -1,0 +1,30 @@
+---
+import SpheronLogo from "@spheron/ui-library/dist/assets/spheron-specific-spheron-logo.svg";
+import { Image } from "astro:assets";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={"TEST"} />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.js"
+      integrity="sha512-BJ/5sR2hFxQTKin/55JQCcMTObShDBAmVjL/3NR/MVcrhyOazJjAgvROem03+HYyGw16SVdSfoWCFGr9syxAKA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"></script>
+    <title>Spheron SSR Test</title>
+  </head>
+  <body class="">
+    <Navbar
+      logoIcon={(<Image src={SpheronLogo} alt="logo" />)}
+      infoElements={(
+        <div class="flex flex-1 justify-end items-center space-x-5"></div>
+      )}
+    />
+    <section class="container mx-auto max-w-screen-xl mt-10 px-8">
+      Section
+    </section>
+  </body>
+</html>
