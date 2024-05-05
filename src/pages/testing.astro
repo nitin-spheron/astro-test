@@ -1,23 +1,115 @@
 ---
-import { InstanceCard } from "@spheron/ui-library";
-import { Image } from "astro:assets";
-import about from "../images/about.jpg";
-import team1 from "../images/team1.png";
-import team2 from "../images/team2.png";
-import team3 from "../images/team3.png";
-import MainLayout from "../../src copy/layouts/MainLayout.astro";
+import {
+  InstanceCard,
+  InstanceCardType,
+  InstanceDeploymentType,
+} from "@spheron/ui-library";
+import MainLayout from "../layouts/MainLayout.astro";
+
+interface IInstance {
+  _id?: any;
+  state: any;
+  deployments: string[];
+  name: string;
+  latestUrlPreview: string | null;
+  retrievableAkt: number;
+  withdrawnAkt: number;
+  scalableRunningCost: number;
+  computeProject: any;
+  activeDeployment: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string;
+  topupReport: any;
+  defaultDailyTopup: number;
+  defaultDailyTopUp: number;
+  price: number;
+  scalableRunningCostUpdatedAt: string;
+  version: number;
+  computeType: any;
+  region: string;
+  type: InstanceDeploymentType;
+  scalable?: boolean;
+  discount: any;
+}
+
+enum InstanceCardState {
+  PROVISIONED = "Provisioned",
+  PROVISIONING = "Provisioning",
+  FAILED = "Failed",
+  CLOSED = "Closed",
+  DEPRECATED = "Deprecated",
+  ACTIVE = "Active",
+  STARTING = "Starting",
+}
+
+const getInstanceState = (state: string): InstanceCardState => {
+  switch (state?.toLowerCase()) {
+    case "starting":
+      return InstanceCardState.PROVISIONING;
+    case "active":
+    case "provisioned":
+    case "deployed":
+      return InstanceCardState.PROVISIONED;
+    case "failed-start":
+    case "failed":
+      return InstanceCardState.FAILED;
+    case "closed":
+    default:
+      return InstanceCardState.CLOSED;
+    case "deprecated":
+      return InstanceCardState.DEPRECATED;
+  }
+};
+
+const selectedInstance: any = {
+  state: "Active",
+  type: "COMPUTE",
+  deployments: ["6633666d17622f986933ae52"],
+  scalable: true,
+  consumedCredits: 0.7915524000000002,
+  _id: "6633666d17622fa0bb33ae51",
+  name: "mongo 13",
+  computeProject: {
+    _id: "6630b2180807f2242563acae",
+    state: "MAINTAINED",
+    name: "Docker Hub Deployments",
+    organization: "65c3632ff7c7eb0012bdb8aa",
+    provider: "DOCKERHUB",
+    description: "",
+    createdAt: "2024-04-30T08:55:52.769Z",
+    updatedAt: "2024-05-02T10:10:48.774Z",
+    instanceReport: {
+      active: 2,
+      starting: 0,
+      failedToStart: 0,
+      closed: 14,
+      total: 16,
+      lastTimeInstanceActivated: "2024-05-05T04:28:53.082Z",
+      lastTimeInstanceStarted: "2024-05-05T04:28:53.082Z",
+      lastTimeInstanceFailedToStart: null,
+      lastTimeInstanceClosed: "2024-05-02T11:30:46.483Z",
+    },
+    topupReport: null,
+  },
+  activeDeployment: "6633666d17622f986933ae52",
+  region: "us-west",
+  version: 2,
+  createdAt: "2024-05-02T10:09:49.721Z",
+  updatedAt: "2024-05-05T04:28:53.082Z",
+  lastLogUpdate: "2024-05-05T04:28:53.082Z",
+  lastStatusUpdate: "2024-05-05T04:26:25.393Z",
+  defaultDailyTopUp: 0.3099016666666667,
+  computeType: "ON_DEMAND",
+  topupReport: null,
+  defaultDailyTopup: 0.3099016666666667,
+  price: 0.0000015024867825180006,
+};
 ---
 
 <MainLayout title="SSR Testing for using Astro">
   <h1 class="text-4xl font-bold mb-5">Spheron</h1>
   <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-    <div class="w-full md:w-1/2 mb-8 md:mb-0">
-      <Image
-        src={about}
-        alt="Tech People Team"
-        class="w-full h-auto rounded-lg shadow-lg"
-      />
-    </div>
     <div class="w-full md:w-1/2">
       <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Who We Are</h2>
       <p class="text-gray-700 leading-relaxed mb-6">
@@ -25,42 +117,38 @@ import MainLayout from "../../src copy/layouts/MainLayout.astro";
         bringing you the latest news, articles, and tutorials on all things
         technology.
       </p>
-      <p class="text-gray-700 leading-relaxed mb-6">
-        Our mission is to empower and educate our readers, helping them stay
-        up-to-date with the rapidly evolving world of technology. Whether you're
-        a seasoned developer, a gadget enthusiast, or just curious about the
-        latest tech trends, we've got you covered.
-      </p>
     </div>
   </div>
 
-  <!-- Team -->
-  <div class="mt-10">
-    <h2 class="text-3xl font-extrabold text-gray-900 mb-8">Our Team</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <Image src={team1} alt="Team Member 1" class="w-full h-auto" />
-        <div class="p-6">
-          <h3 class="text-xl font-semibold text-gray-900 mb-2">John Doe</h3>
-          <p class="text-gray-70">Founder & Editor-in-Chief</p>
-        </div>
-      </div>
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <Image src={team2} alt="Team Member 2" class="w-full h-auto" />
-        <div class="p-6">
-          <h3 class="text-xl font-semibold text-gray-900 mb-2">Paul Newman</h3>
-          <p class="text-gray-70">Lead Writer</p>
-        </div>
-      </div>
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <Image src={team3} alt="Team Member 3" class="w-full h-auto" />
-        <div class="p-6">
-          <h3 class="text-xl font-semibold text-gray-900 mb-2">
-            Johanna Johnson
-          </h3>
-          <p class="text-gray-70">Tech Analyst</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <InstanceCard
+    detailsPage
+    name={selectedInstance?.name || ""}
+    updatedAt="15th August 1947"
+    domainName=""
+    region={selectedInstance?.region || ""}
+    instanceCardType={InstanceCardType.SIDEBYSIDE}
+    id={selectedInstance?._id || ""}
+    scalingType="Auto"
+    instanceState={getInstanceState((selectedInstance as IInstance)?.state)}
+    instanceType={((
+      selectedInstance as unknown as IInstance
+    )?.type?.toLocaleLowerCase() as InstanceDeploymentType) || ""}
+    totalPrice={(selectedInstance as IInstance)?.state.toLowerCase() ===
+      "failed" ||
+    (selectedInstance as any)?.state.toLowerCase() === "failed-start" ||
+    (selectedInstance as IInstance)?.state.toLowerCase() === "closed" ||
+    (selectedInstance as IInstance)?.state.toLowerCase() === "deprecated" ||
+    (selectedInstance as IInstance)?.state.toLowerCase() === "starting"
+      ? undefined
+      : (selectedInstance as IInstance)?.defaultDailyTopUp * 30}
+    priceUnit="/mo"
+    onClick={() => {}}
+    onCheckboxClick={() => {}}
+    isSelected={false}
+    discountBadgeText={`${
+      selectedInstance?.discount
+        ? `${selectedInstance.discount.discountPercent}% OFF`
+        : ""
+    }`}
+  />
 </MainLayout>
