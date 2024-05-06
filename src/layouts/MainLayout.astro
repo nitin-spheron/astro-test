@@ -1,6 +1,5 @@
 ---
-import { Navbar } from "@spheron/ui-library";
-import { Image } from "astro:assets";
+import { ViewTransitions } from "astro:transitions";
 ---
 
 <!doctype html>
@@ -12,6 +11,7 @@ import { Image } from "astro:assets";
     <meta name="generator" content={Astro.generator} /><script
       src="index.js"
       type="module"></script>
+    <ViewTransitions />
   </head>
   <body>
     <slot />

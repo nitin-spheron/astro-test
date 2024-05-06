@@ -1,42 +1,43 @@
 import React, { useEffect, useState } from "react";
+import { navigate } from "astro:transitions/client";
 
-enum InstanceCardScalingType {
-  SPOT = "Spot",
-  ONDEMAND = "On-Demand",
-  AUTO = "Auto",
-}
+// enum InstanceCardScalingType {
+//   SPOT = "Spot",
+//   ONDEMAND = "On-Demand",
+//   AUTO = "Auto",
+// }
 
-enum InstanceCardState {
-  PROVISIONED = "Provisioned",
-  PROVISIONING = "Provisioning",
-  FAILED = "Failed",
-  CLOSED = "Closed",
-  DEPRECATED = "Deprecated",
-  ACTIVE = "Active",
-  STARTING = "Starting",
-}
+// enum InstanceCardState {
+//   PROVISIONED = "Provisioned",
+//   PROVISIONING = "Provisioning",
+//   FAILED = "Failed",
+//   CLOSED = "Closed",
+//   DEPRECATED = "Deprecated",
+//   ACTIVE = "Active",
+//   STARTING = "Starting",
+// }
 
-enum InstanceDeploymentType {
-  COMPUTE = "compute",
-  ACCELERATE = "accelerate",
-  MULTISERVICE = "multiservice",
-}
+// enum InstanceDeploymentType {
+//   COMPUTE = "compute",
+//   ACCELERATE = "accelerate",
+//   MULTISERVICE = "multiservice",
+// }
 
-enum InstanceCardType {
-  DEFAULT = "default",
-  SIDEBYSIDE = "side-by-side",
-}
+// enum InstanceCardType {
+//   DEFAULT = "default",
+//   SIDEBYSIDE = "side-by-side",
+// }
 
 interface InstanceCardProps extends React.DOMAttributes<HTMLDivElement> {
   name: string;
   updatedAt: string;
   domainName: string;
   region: string;
-  instanceCardType: InstanceCardType;
+  instanceCardType: any;
   id: string;
-  scalingType: InstanceCardScalingType;
-  instanceState: InstanceCardState;
-  instanceType: InstanceDeploymentType;
+  scalingType: any;
+  instanceState: any;
+  instanceType: any;
   totalPrice?: number;
   priceUnit?: string;
   isSelected: boolean;
@@ -107,6 +108,14 @@ export const InstanceCard: React.FC<InstanceCardProps> = ({
       }`}
       {...props}
     >
+      <button
+        onClick={() => {
+          console.log("redirect clicked");
+          navigate("/xyz");
+        }}
+      >
+        Redirect
+      </button>
       {instanceCardType !== "side-by-side" && (
         <div
           role="presentation"

@@ -1,6 +1,8 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import { InstanceCard } from "../components/InstanceCard";
+import { navigate } from "astro:transitions/client";
+import { InstanceCardUiLib } from "../components/InstanceCardUiLib";
 
 interface IInstance {
   _id?: any;
@@ -105,7 +107,7 @@ const selectedInstance: any = {
 
 <MainLayout title="SSR Testing for using Astro">
   <div class="p-8 flex flex-col justify-center">
-    <h1 class="text-4xl font-bold mb-5">Spheron</h1>
+    <h1 class="text-4xl font-bold mb-5">Instance List</h1>
     <div class="flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="w-full md:w-1/2">
         <!-- <Button
@@ -115,48 +117,13 @@ const selectedInstance: any = {
         onClick={() => null}
       /> -->
       </div>
+      <div class="flex flex-col gap-2">
+        {
+          Array.from(Array(10).keys()).map(() => (
+            <InstanceCardUiLib selectedInstance={selectedInstance} />
+          ))
+        }
+      </div>
     </div>
-
-    {
-      Array.from(Array(5).keys()).map(() => (
-        <InstanceCard
-          detailsPage
-          name={selectedInstance?.name || ""}
-          updatedAt="15th August 1947"
-          domainName=""
-          region={selectedInstance?.region || ""}
-          instanceCardType="side-by-side"
-          id={selectedInstance?._id || ""}
-          scalingType="Auto"
-          instanceState={getInstanceState(
-            (selectedInstance as IInstance)?.state
-          )}
-          instanceType={
-            ((
-              selectedInstance as unknown as IInstance
-            )?.type?.toLocaleLowerCase() as any) || ""
-          }
-          totalPrice={
-            (selectedInstance as IInstance)?.state.toLowerCase() === "failed" ||
-            (selectedInstance as any)?.state.toLowerCase() === "failed-start" ||
-            (selectedInstance as IInstance)?.state.toLowerCase() === "closed" ||
-            (selectedInstance as IInstance)?.state.toLowerCase() ===
-              "deprecated" ||
-            (selectedInstance as IInstance)?.state.toLowerCase() === "starting"
-              ? undefined
-              : (selectedInstance as IInstance)?.defaultDailyTopUp * 30
-          }
-          priceUnit="/mo"
-          onClick={() => {}}
-          onCheckboxClick={() => {}}
-          isSelected={false}
-          discountBadgeText={`${
-            selectedInstance?.discount
-              ? `${selectedInstance.discount.discountPercent}% OFF`
-              : ""
-          }`}
-        />
-      ))
-    }
   </div>
 </MainLayout>

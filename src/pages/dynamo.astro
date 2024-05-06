@@ -1,6 +1,7 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import { InstanceCard } from "../components/InstanceCard";
+// import { Button } from "@spheron/ui-library";
 
 interface IInstance {
   _id?: any;
@@ -101,68 +102,81 @@ const selectedInstance: any = {
   defaultDailyTopup: 0.3099016666666667,
   price: 0.0000015024867825180006,
 };
+
+const url =
+  "https://api-dev.spheron.network/v1/compute-project/6630b2180807f2242563acae/instances?skip=0&limit=6&topupReport=n&state=";
+const token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2lkIjoiNjI3MTEyNGIwNThjN2U1MmNjYzI5ZDAxIiwiaXNfYWN0aXZlIjp0cnVlLCJpYXQiOjE3MTQ5ODE0NTQsImV4cCI6MTcxNTA2Nzg1NCwiaXNzIjoid3d3LnNwaGVyb24ubmV0d29yayJ9.dqYicr3rc1H5ppPjx3T6PcF4cLK5OJDZXA9ueXa29GQ";
+
+const headers = new Headers();
+headers.append("Authorization", `Bearer ${token}`);
+headers.append("Content-Type", "application/json");
+
+const requestOptions: RequestInit = {
+  method: "GET",
+  headers: headers,
+  // You can add more options like body for POST requests
+};
+
+const response = await fetch(url, requestOptions);
+const data = await response.json();
+console.log("data --", data);
 ---
 
 <MainLayout title="SSR Testing for using Astro">
   <div class="p-8 flex flex-col justify-center">
-    <h1 class="text-4xl font-bold mb-5">Instance List</h1>
+    <h1 class="text-4xl font-bold mb-5">Spheron</h1>
     <div class="flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="w-full md:w-1/2">
         <!-- <Button
-        buttonType="primary"
-        label="Click"
-        size="small"
-        onClick={() => null}
-      /> -->
+          buttonType="primary"
+          label="Click"
+          size="small"
+          onClick={() => null}
+        /> -->
       </div>
     </div>
-    <div class="flex flex-col gap-2">
-      {
-        Array.from(Array(5).keys()).map(() => (
-          <InstanceCard
-            client:visible
-            detailsPage
-            name={selectedInstance?.name || ""}
-            updatedAt="15th August 1947"
-            domainName=""
-            region={selectedInstance?.region || ""}
-            instanceCardType="side-by-side"
-            id={selectedInstance?._id || ""}
-            scalingType="Auto"
-            instanceState={getInstanceState(
-              (selectedInstance as IInstance)?.state
-            )}
-            instanceType={
-              ((
-                selectedInstance as unknown as IInstance
-              )?.type?.toLocaleLowerCase() as any) || ""
-            }
-            totalPrice={
-              (selectedInstance as IInstance)?.state.toLowerCase() ===
-                "failed" ||
-              (selectedInstance as any)?.state.toLowerCase() ===
-                "failed-start" ||
-              (selectedInstance as IInstance)?.state.toLowerCase() ===
-                "closed" ||
-              (selectedInstance as IInstance)?.state.toLowerCase() ===
-                "deprecated" ||
-              (selectedInstance as IInstance)?.state.toLowerCase() ===
-                "starting"
-                ? undefined
-                : (selectedInstance as IInstance)?.defaultDailyTopUp * 30
-            }
-            priceUnit="/mo"
-            onClick={() => {}}
-            onCheckboxClick={() => {}}
-            isSelected={false}
-            discountBadgeText={`${
-              selectedInstance?.discount
-                ? `${selectedInstance.discount.discountPercent}% OFF`
-                : ""
-            }`}
-          />
-        ))
-      }
-    </div>
+
+    {
+      Array.from(Array(50).keys()).map(() => (
+        <InstanceCard
+          detailsPage
+          name={selectedInstance?.name || ""}
+          updatedAt="15th August 1947"
+          domainName=""
+          region={selectedInstance?.region || ""}
+          instanceCardType="side-by-side"
+          id={selectedInstance?._id || ""}
+          scalingType="Auto"
+          instanceState={getInstanceState(
+            (selectedInstance as IInstance)?.state
+          )}
+          instanceType={
+            ((
+              selectedInstance as unknown as IInstance
+            )?.type?.toLocaleLowerCase() as any) || ""
+          }
+          totalPrice={
+            (selectedInstance as IInstance)?.state.toLowerCase() === "failed" ||
+            (selectedInstance as any)?.state.toLowerCase() === "failed-start" ||
+            (selectedInstance as IInstance)?.state.toLowerCase() === "closed" ||
+            (selectedInstance as IInstance)?.state.toLowerCase() ===
+              "deprecated" ||
+            (selectedInstance as IInstance)?.state.toLowerCase() === "starting"
+              ? undefined
+              : (selectedInstance as IInstance)?.defaultDailyTopUp * 30
+          }
+          priceUnit="/mo"
+          onClick={() => {}}
+          onCheckboxClick={() => {}}
+          isSelected={false}
+          discountBadgeText={`${
+            selectedInstance?.discount
+              ? `${selectedInstance.discount.discountPercent}% OFF`
+              : ""
+          }`}
+        />
+      ))
+    }
   </div>
 </MainLayout>
