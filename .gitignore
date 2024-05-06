@@ -6,6 +6,7 @@
 .pnp.js
 /keygen
 /keygen.pub
+.npmrc
 
 # testing
 /coverage
