@@ -1,0 +1,168 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import { InstanceCard } from "../components/InstanceCard";
+
+interface IInstance {
+  _id?: any;
+  state: any;
+  deployments: string[];
+  name: string;
+  latestUrlPreview: string | null;
+  retrievableAkt: number;
+  withdrawnAkt: number;
+  scalableRunningCost: number;
+  computeProject: any;
+  activeDeployment: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string;
+  topupReport: any;
+  defaultDailyTopup: number;
+  defaultDailyTopUp: number;
+  price: number;
+  scalableRunningCostUpdatedAt: string;
+  version: number;
+  computeType: any;
+  region: string;
+  type: any;
+  scalable?: boolean;
+  discount: any;
+}
+
+enum InstanceCardState {
+  PROVISIONED = "Provisioned",
+  PROVISIONING = "Provisioning",
+  FAILED = "Failed",
+  CLOSED = "Closed",
+  DEPRECATED = "Deprecated",
+  ACTIVE = "Active",
+  STARTING = "Starting",
+}
+
+const getInstanceState = (state: string): InstanceCardState => {
+  switch (state?.toLowerCase()) {
+    case "starting":
+      return InstanceCardState.PROVISIONING;
+    case "active":
+    case "provisioned":
+    case "deployed":
+      return InstanceCardState.PROVISIONED;
+    case "failed-start":
+    case "failed":
+      return InstanceCardState.FAILED;
+    case "closed":
+    default:
+      return InstanceCardState.CLOSED;
+    case "deprecated":
+      return InstanceCardState.DEPRECATED;
+  }
+};
+
+const selectedInstance: any = {
+  state: "Active",
+  type: "COMPUTE",
+  deployments: ["6633666d17622f986933ae52"],
+  scalable: true,
+  consumedCredits: 0.7915524000000002,
+  _id: "6633666d17622fa0bb33ae51",
+  name: "mongo 13",
+  computeProject: {
+    _id: "6630b2180807f2242563acae",
+    state: "MAINTAINED",
+    name: "Docker Hub Deployments",
+    organization: "65c3632ff7c7eb0012bdb8aa",
+    provider: "DOCKERHUB",
+    description: "",
+    createdAt: "2024-04-30T08:55:52.769Z",
+    updatedAt: "2024-05-02T10:10:48.774Z",
+    instanceReport: {
+      active: 2,
+      starting: 0,
+      failedToStart: 0,
+      closed: 14,
+      total: 16,
+      lastTimeInstanceActivated: "2024-05-05T04:28:53.082Z",
+      lastTimeInstanceStarted: "2024-05-05T04:28:53.082Z",
+      lastTimeInstanceFailedToStart: null,
+      lastTimeInstanceClosed: "2024-05-02T11:30:46.483Z",
+    },
+    topupReport: null,
+  },
+  activeDeployment: "6633666d17622f986933ae52",
+  region: "us-west",
+  version: 2,
+  createdAt: "2024-05-02T10:09:49.721Z",
+  updatedAt: "2024-05-05T04:28:53.082Z",
+  lastLogUpdate: "2024-05-05T04:28:53.082Z",
+  lastStatusUpdate: "2024-05-05T04:26:25.393Z",
+  defaultDailyTopUp: 0.3099016666666667,
+  computeType: "ON_DEMAND",
+  topupReport: null,
+  defaultDailyTopup: 0.3099016666666667,
+  price: 0.0000015024867825180006,
+};
+---
+
+<MainLayout title="SSR Testing for using Astro">
+  <div class="p-8 flex flex-col justify-center">
+    <h1 class="text-4xl font-bold mb-5">Instance List</h1>
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="w-full md:w-1/2">
+        <!-- <Button
+        buttonType="primary"
+        label="Click"
+        size="small"
+        onClick={() => null}
+      /> -->
+      </div>
+    </div>
+    <div class="flex flex-col gap-2">
+      {
+        Array.from(Array(5).keys()).map(() => (
+          <InstanceCard
+            client:visible
+            detailsPage
+            name={selectedInstance?.name || ""}
+            updatedAt="15th August 1947"
+            domainName=""
+            region={selectedInstance?.region || ""}
+            instanceCardType="side-by-side"
+            id={selectedInstance?._id || ""}
+            scalingType="Auto"
+            instanceState={getInstanceState(
+              (selectedInstance as IInstance)?.state
+            )}
+            instanceType={
+              ((
+                selectedInstance as unknown as IInstance
+              )?.type?.toLocaleLowerCase() as any) || ""
+            }
+            totalPrice={
+              (selectedInstance as IInstance)?.state.toLowerCase() ===
+                "failed" ||
+              (selectedInstance as any)?.state.toLowerCase() ===
+                "failed-start" ||
+              (selectedInstance as IInstance)?.state.toLowerCase() ===
+                "closed" ||
+              (selectedInstance as IInstance)?.state.toLowerCase() ===
+                "deprecated" ||
+              (selectedInstance as IInstance)?.state.toLowerCase() ===
+                "starting"
+                ? undefined
+                : (selectedInstance as IInstance)?.defaultDailyTopUp * 30
+            }
+            priceUnit="/mo"
+            onClick={() => {}}
+            onCheckboxClick={() => {}}
+            isSelected={false}
+            discountBadgeText={`${
+              selectedInstance?.discount
+                ? `${selectedInstance.discount.discountPercent}% OFF`
+                : ""
+            }`}
+          />
+        ))
+      }
+    </div>
+  </div>
+</MainLayout>

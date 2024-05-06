@@ -3,11 +3,23 @@ import MainLayout from "../layouts/MainLayout.astro";
 ---
 
 <MainLayout>
-  <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
-    <div>
-      <h1 class="text-xl font-bold mt-4 mb-8 leading-tight xl:text-6xl">
-        SSR Testing for Astro App
-      </h1>
+  <div class="flex flex-col items-center justify-center p-8">
+    <h1 class="text-xl font-bold mt-4 mb-8 leading-tight">
+      SSR Testing for Astro App
+    </h1>
+    <div class="flex flex-row gap-8">
+      <a
+        href="/static"
+        class="bg-teal-900 text-white py-3 px-6 rounded-xl text-xl"
+      >
+        Static
+      </a>
+      <a
+        href="/dynamic"
+        class="bg-teal-900 text-white py-3 px-6 rounded-xl text-xl"
+      >
+        Dynamic
+      </a>
     </div>
   </div>
 </MainLayout>

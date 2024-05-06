@@ -117,36 +117,46 @@ const selectedInstance: any = {
       </div>
     </div>
 
-    <InstanceCard
-      detailsPage
-      name={selectedInstance?.name || ""}
-      updatedAt="15th August 1947"
-      domainName=""
-      region={selectedInstance?.region || ""}
-      instanceCardType="side-by-side"
-      id={selectedInstance?._id || ""}
-      scalingType="Auto"
-      instanceState={getInstanceState((selectedInstance as IInstance)?.state)}
-      instanceType={((
-        selectedInstance as unknown as IInstance
-      )?.type?.toLocaleLowerCase() as any) || ""}
-      totalPrice={(selectedInstance as IInstance)?.state.toLowerCase() ===
-        "failed" ||
-      (selectedInstance as any)?.state.toLowerCase() === "failed-start" ||
-      (selectedInstance as IInstance)?.state.toLowerCase() === "closed" ||
-      (selectedInstance as IInstance)?.state.toLowerCase() === "deprecated" ||
-      (selectedInstance as IInstance)?.state.toLowerCase() === "starting"
-        ? undefined
-        : (selectedInstance as IInstance)?.defaultDailyTopUp * 30}
-      priceUnit="/mo"
-      onClick={() => {}}
-      onCheckboxClick={() => {}}
-      isSelected={false}
-      discountBadgeText={`${
-        selectedInstance?.discount
-          ? `${selectedInstance.discount.discountPercent}% OFF`
-          : ""
-      }`}
-    />
+    {
+      Array.from(Array(5).keys()).map(() => (
+        <InstanceCard
+          detailsPage
+          name={selectedInstance?.name || ""}
+          updatedAt="15th August 1947"
+          domainName=""
+          region={selectedInstance?.region || ""}
+          instanceCardType="side-by-side"
+          id={selectedInstance?._id || ""}
+          scalingType="Auto"
+          instanceState={getInstanceState(
+            (selectedInstance as IInstance)?.state
+          )}
+          instanceType={
+            ((
+              selectedInstance as unknown as IInstance
+            )?.type?.toLocaleLowerCase() as any) || ""
+          }
+          totalPrice={
+            (selectedInstance as IInstance)?.state.toLowerCase() === "failed" ||
+            (selectedInstance as any)?.state.toLowerCase() === "failed-start" ||
+            (selectedInstance as IInstance)?.state.toLowerCase() === "closed" ||
+            (selectedInstance as IInstance)?.state.toLowerCase() ===
+              "deprecated" ||
+            (selectedInstance as IInstance)?.state.toLowerCase() === "starting"
+              ? undefined
+              : (selectedInstance as IInstance)?.defaultDailyTopUp * 30
+          }
+          priceUnit="/mo"
+          onClick={() => {}}
+          onCheckboxClick={() => {}}
+          isSelected={false}
+          discountBadgeText={`${
+            selectedInstance?.discount
+              ? `${selectedInstance.discount.discountPercent}% OFF`
+              : ""
+          }`}
+        />
+      ))
+    }
   </div>
 </MainLayout>
